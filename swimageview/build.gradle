@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 24
@@ -22,4 +23,15 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.0.0'
+}
+
+publish {
+    userOrg = 'burkdog'
+    groupId = 'kr.swkang.swimageview'
+    artifactId = 'swimageview'
+    publishVersion = '1.0.0'
+    desc = 'SW ImageView'
+    website = 'https://github.com/ksu3101/SwImageView'
+    issueTracker = 'https://github.com/ksu3101/SwImageView/issues'
+    repository = 'https://github.com/ksu3101/SwImageView.git'
 }
