@@ -1,8 +1,32 @@
 package kr.swkang.swimageview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Shader;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.TransitionDrawable;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.ImageView;
+
+import kr.swkang.swimageview.utils.ArgbEvaluatorCompat;
+import kr.swkang.swimageview.utils.RoundedDrawable;
+import kr.swkang.swimageview.utils.RoundedDrawableParams;
 
 /**
  * @author KangSung-Woo
@@ -10,19 +34,397 @@ import android.widget.ImageView;
  */
 public class SwImageView
     extends ImageView {
+  public static final  int         DEFAULT_TRANSITION_DURATION = 250;
+  private static final String      TAG                         = SwImageView.class.getSimpleName();
+  private final        ScaleType[] scaleTypes                  = {
+      ScaleType.MATRIX,
+      ScaleType.FIT_XY,
+      ScaleType.FIT_START,
+      ScaleType.FIT_CENTER,
+      ScaleType.FIT_END,
+      ScaleType.CENTER,
+      ScaleType.CENTER_CROP,
+      ScaleType.CENTER_INSIDE
+  };
+  private Drawable              drawable;
+  private RoundedDrawableParams roundedDrawableParams;
+  private boolean               isEnableTransition;
+  private int                   transitionDuration;
 
   public SwImageView(Context context) {
-    super(context);
+    this(context, null);
   }
 
   public SwImageView(Context context, AttributeSet attrs) {
-    super(context, attrs);
+    this(context, attrs, 0);
   }
 
   public SwImageView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
+    initializeParams(context, attrs, defStyleAttr);
   }
 
+  private void initializeParams(@NonNull Context context, AttributeSet attrs, int defStyle) {
+    // set default values
+    initializeDefaultParams();
+    roundedDrawableParams = new RoundedDrawableParams();
+    if (attrs != null) {
+      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwImageView, defStyle, 0);
 
+      // image drawable ScaleTypes
+      final int scaleTypeIndex = a.getInt(R.styleable.SwImageView_android_scaleType, 6);
+      final ScaleType scaleType = scaleTypes[scaleTypeIndex];
+      roundedDrawableParams.setScaleType(scaleType);
+
+      // corner radius
+      final float cornerRadius = (float) a.getDimensionPixelSize(R.styleable.SwImageView_siv_corner_radius, (int) RoundedDrawableParams.DEFAULT_CORNER_RADIUS);
+      roundedDrawableParams.setCornerRadius(cornerRadius);
+
+      // border width
+      final float borderWidth = (float) a.getDimensionPixelSize(R.styleable.SwImageView_siv_border_width, (int) RoundedDrawableParams.DEFAULT_BORDER_WIDTH);
+      roundedDrawableParams.setBorderWidth(borderWidth);
+
+      // border colors
+      final ColorStateList borderColor = a.getColorStateList(R.styleable.SwImageView_siv_border_color);
+      if (borderColor != null) {
+        roundedDrawableParams.setBorderColorList(borderColor);
+      }
+
+      // is oval image
+      final boolean isOval = a.getBoolean(R.styleable.SwImageView_siv_is_oval, false);
+      roundedDrawableParams.setOvalImage(isOval);
+
+      // x, y tile mode
+      final int tileModeValue = a.getInt(R.styleable.SwImageView_siv_tileMode, -1);
+      if (tileModeValue != -1) {
+        Shader.TileMode tileMode = parseTileModeFromValues(tileModeValue);
+        if (tileMode != null) {
+          roundedDrawableParams.setTileModeX(tileMode);
+          roundedDrawableParams.setTileModeY(tileMode);
+        }
+      }
+
+      // x tile mode
+      final int tileModeXvalue = a.getInt(R.styleable.SwImageView_siv_tileMode_x, -1);
+      if (tileModeXvalue != -1) {
+        Shader.TileMode tileModeX = parseTileModeFromValues(tileModeXvalue);
+        if (tileModeX != null) {
+          roundedDrawableParams.setTileModeX(tileModeX);
+        }
+      }
+
+      // y tile mode
+      final int tileModeYvalue = a.getInt(R.styleable.SwImageView_siv_tileMode_y, -1);
+      if (tileModeYvalue != -1) {
+        Shader.TileMode tileModeY = parseTileModeFromValues(tileModeYvalue);
+        if (tileModeY != null) {
+          roundedDrawableParams.setTileModeY(tileModeY);
+        }
+      }
+
+      // click highlighting color
+      final ColorStateList clickColors = a.getColorStateList(R.styleable.SwImageView_siv_click_color);
+      if (clickColors != null) {
+        final int clickColor = clickColors.getDefaultColor();
+        roundedDrawableParams.setClickHighlightingColor(clickColor);
+      }
+
+      // click animation durations
+      final int clickAnimDurations = a.getInt(R.styleable.SwImageView_siv_click_duration, RoundedDrawableParams.DEFAULT_CLICK_ANIM_DURATION);
+      roundedDrawableParams.setClickEnterAnimDuration(clickAnimDurations);
+      roundedDrawableParams.setClickExitAnimDuration(clickAnimDurations);
+
+      // click enter animation durations
+      final int clickEnterAnimDuration = a.getInt(R.styleable.SwImageView_siv_click_enter_duration, RoundedDrawableParams.DEFAULT_CLICK_ANIM_DURATION);
+      roundedDrawableParams.setClickEnterAnimDuration(clickEnterAnimDuration);
+
+      // click exit animation durations
+      final int clickExitAnimDuration = a.getInt(R.styleable.SwImageView_siv_click_exit_duration, RoundedDrawableParams.DEFAULT_CLICK_ANIM_DURATION);
+      roundedDrawableParams.setClickExitAnimDuration(clickExitAnimDuration);
+
+      a.recycle();
+    }
+
+    updateRoundedDrawableParameters(drawable);
+    setFocusable(true);
+  }
+
+  private void initializeDefaultParams() {
+    this.isEnableTransition = true;
+    this.transitionDuration = DEFAULT_TRANSITION_DURATION;
+  }
+
+  private void updateRoundedDrawableParameters(@NonNull Drawable drawable) {
+    if (roundedDrawableParams != null) {
+      if (drawable instanceof RoundedDrawable) {
+        RoundedDrawable rd = (RoundedDrawable) drawable;
+        rd.setScaleType(roundedDrawableParams.getScaleType())
+          .setCornerRadius(roundedDrawableParams.getCornerRadius())
+          .setBorderWidth(roundedDrawableParams.getBorderWidth())
+          .setBorderColor(roundedDrawableParams.getBorderColor())
+          .setOval(roundedDrawableParams.isOval())
+          .setTileModeX(roundedDrawableParams.getTileModeX())
+          .setTileModeY(roundedDrawableParams.getTileModeY());
+
+      }
+      else if (drawable instanceof LayerDrawable) {
+        LayerDrawable ld = ((LayerDrawable) drawable);
+        for (int i = 0, layers = ld.getNumberOfLayers(); i < layers; i++) {
+          updateRoundedDrawableParameters(ld.getDrawable(i));
+        }
+      }
+    }
+  }
+
+  public void setRoundedDrawableParams(@NonNull RoundedDrawableParams params) {
+    this.roundedDrawableParams = params;
+    updateRoundedDrawableParameters(drawable);
+  }
+
+  public void setEnableTransition(boolean isEnable) {
+    this.isEnableTransition = isEnable;
+  }
+
+  public void setTransitionDuration(@IntRange(from = 50) int transitionDuration) {
+    this.transitionDuration = transitionDuration;
+  }
+
+  @Override
+  public void setScaleType(@NonNull ScaleType scaleType) {
+    if (roundedDrawableParams.getScaleType() != scaleType) {
+      if (roundedDrawableParams != null) {
+        roundedDrawableParams.setScaleType(scaleType);
+      }
+      updateRoundedDrawableParameters(drawable);
+      invalidate();
+    }
+  }
+
+  public void setCornerRadius(@FloatRange(from = 0f) float cornerRadius) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setCornerRadius(cornerRadius);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setBorderWidth(@FloatRange(from = 0f) float borderWidth) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setBorderWidth(borderWidth);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setBorderColor(@ColorInt int borderColor) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setBorderColor(borderColor);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setBorderColorList(@NonNull ColorStateList colorStateList) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setBorderColorList(colorStateList);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setOvalImage(boolean isOval) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setOvalImage(isOval);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setTileModeX(@NonNull Shader.TileMode tileModeX) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setTileModeX(tileModeX);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setTileModeY(@NonNull Shader.TileMode tileModeY) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setTileModeY(tileModeY);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setClickHighlightingColor(@ColorInt int highlightingColor) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setClickHighlightingColor(highlightingColor);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setClickHighlightingColor(@IntRange(from = 0, to = 100) int alpha, @ColorInt int highlightingColor) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setClickHighlightingColor(alpha, highlightingColor);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setClickEnterAnimDuration(@IntRange(from = 50) int enterAnimDuration) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setClickEnterAnimDuration(enterAnimDuration);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setClickExitAnimDuration(@IntRange(from = 50) int exitAnimDuration) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setClickExitAnimDuration(exitAnimDuration);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  @Override
+  public void setImageDrawable(Drawable drawable) {
+    this.drawable = RoundedDrawable.fromDrawable(drawable);
+    if (this.drawable != null) {
+      setImageFromRounndedDrawable(this.drawable);
+    }
+  }
+
+  @Override
+  public void setImageBitmap(Bitmap bm) {
+    drawable = RoundedDrawable.fromBitmap(bm);
+    if (drawable != null) {
+      setImageFromRounndedDrawable(drawable);
+    }
+  }
+
+  @Override
+  public void setImageResource(int resId) {
+    drawable = RoundedDrawable.fromDrawable(ResourcesCompat.getDrawable(getResources(), resId, null));
+    if (drawable != null) {
+      setImageFromRounndedDrawable(drawable);
+    }
+  }
+
+  private void setImageFromRounndedDrawable(Drawable drawable) {
+    if (drawable == null) {
+      Log.e(TAG, "Image drawable instance is Null.");
+    }
+    else {
+      updateRoundedDrawableParameters(drawable);
+      if (isEnableTransition) {
+        clearAnimation();
+        final Drawable back = getDrawable();
+        final TransitionDrawable td = createTransitionDrawable(
+            back == null ? new ColorDrawable(
+                Color.BLACK
+            ) : back,
+            drawable
+        );
+        td.setCrossFadeEnabled(true);
+        super.setImageDrawable(td);
+        td.startTransition(transitionDuration <= 0 ? 250 : transitionDuration);
+        return;
+      }
+    }
+    super.setImageDrawable(drawable);
+  }
+
+  private TransitionDrawable createTransitionDrawable(Drawable startLayer, Drawable endLayer) {
+    return new TransitionDrawable(new Drawable[]{
+        startLayer, endLayer
+    });
+  }
+
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    if (isClickable()) {
+      switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN: {
+          // is touch started
+          updateARGBvalueAnimation(false);
+          break;
+        }
+        case MotionEvent.ACTION_UP:
+        case MotionEvent.ACTION_CANCEL: {
+          // cancle event
+          updateARGBvalueAnimation(true);
+          break;
+        }
+      }
+    }
+    return super.onTouchEvent(event);
+  }
+
+  private void updateARGBvalueAnimation(final boolean isEnterAnimation) {
+    clearAnimation();
+
+    if (roundedDrawableParams != null) {
+      // animation of ARGB start color(EnterColor) to end color(ExitColor)
+      ValueAnimator valueAnimator = ofARGB(
+          isEnterAnimation ? roundedDrawableParams.getClickHighlightingColor().getDefaultColor() : RoundedDrawableParams.DEFAULT_DIMM_COLOR,
+          isEnterAnimation ? RoundedDrawableParams.DEFAULT_DIMM_COLOR : roundedDrawableParams.getClickHighlightingColor().getDefaultColor()
+      );
+
+      // set animation durations
+      final int duration = (isEnterAnimation ?
+          roundedDrawableParams.getClickEnterDuration() :
+          roundedDrawableParams.getClickExitDuration());
+      valueAnimator.setDuration(duration);
+
+      // update color filters
+      valueAnimator.addUpdateListener(
+          new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+              final int argbValue = (int) valueAnimator.getAnimatedValue();
+              getDrawable().setColorFilter(argbValue, PorterDuff.Mode.SRC_ATOP);
+              invalidate();
+            }
+          }
+      );
+
+      // attach end animation callback listener
+      valueAnimator.addListener(
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              SwImageView.this.clearColorFilter();
+            }
+          }
+      );
+
+      // start animations
+      valueAnimator.start();
+    }
+    else {
+      Log.e(TAG, "RoundedDrawable Parameter Object is Null.");
+    }
+  }
+
+  private ValueAnimator ofARGB(int... values) {
+    ValueAnimator valueAnimator = new ValueAnimator();
+    valueAnimator.setIntValues(values);
+    valueAnimator.setEvaluator(ArgbEvaluatorCompat.getsInatance());
+    return valueAnimator;
+  }
+
+  private Shader.TileMode parseTileModeFromValues(int value) {
+    switch (value) {
+      case 0:
+        return Shader.TileMode.CLAMP;
+      case 1:
+        return Shader.TileMode.REPEAT;
+      case 2:
+        return Shader.TileMode.MIRROR;
+    }
+    return null;
+  }
 
 }
