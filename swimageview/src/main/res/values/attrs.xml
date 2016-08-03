@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+   <declare-styleable name="SwImageView">
+
+      <attr name="siv_enable_transition" format="boolean"/>
+      <attr name="siv_transition_duration" format="integer"/>
+
+      <attr name="siv_corner_radius" format="dimension"/>
+      <attr name="siv_border_width" format="dimension"/>
+      <attr name="siv_border_color" format="reference|color"/>
+
+      <attr name="siv_is_oval" format="boolean"/>
+
+      <attr name="siv_tileMode">
+         <enum name="clamp" value="0"/>
+         <enum name="repeat" value="1"/>
+         <enum name="mirror" value="2"/>
+      </attr>
+
+      <attr name="siv_tileMode_x">
+         <enum name="clamp" value="0"/>
+         <enum name="repeat" value="1"/>
+         <enum name="mirror" value="2"/>
+      </attr>
+
+      <attr name="siv_tileMode_y">
+         <enum name="clamp" value="0"/>
+         <enum name="repeat" value="1"/>
+         <enum name="mirror" value="2"/>
+      </attr>
+      <attr name="android:scaleType"/>
+
+      <attr name="siv_click_color" format="reference|color"/>
+      <attr name="siv_click_duration" format="integer"/>
+      <attr name="siv_click_enter_duration" format="integer"/>
+      <attr name="siv_click_exit_duration" format="integer"/>
+
+   </declare-styleable>
+
+</resources>
