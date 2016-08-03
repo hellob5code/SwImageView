@@ -29,12 +29,13 @@
          <enum name="repeat" value="1"/>
          <enum name="mirror" value="2"/>
       </attr>
-      <attr name="android:scaleType"/>
 
       <attr name="siv_click_color" format="reference|color"/>
       <attr name="siv_click_duration" format="integer"/>
       <attr name="siv_click_enter_duration" format="integer"/>
       <attr name="siv_click_exit_duration" format="integer"/>
+
+      <attr name="android:scaleType"/>
 
    </declare-styleable>
 

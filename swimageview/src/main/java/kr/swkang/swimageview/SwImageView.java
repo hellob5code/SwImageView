@@ -191,7 +191,8 @@ public class SwImageView
 
   @Override
   public void setScaleType(@NonNull ScaleType scaleType) {
-    if (roundedDrawableParams.getScaleType() != scaleType) {
+    if (roundedDrawableParams != null && roundedDrawableParams.getScaleType() != null &&
+        roundedDrawableParams.getScaleType() != scaleType) {
       if (roundedDrawableParams != null) {
         roundedDrawableParams.setScaleType(scaleType);
       }
@@ -264,7 +265,7 @@ public class SwImageView
     invalidate();
   }
 
-  public void setClickHighlightingColor(@IntRange(from = 0, to = 100) int alpha, @ColorInt int highlightingColor) {
+  public void setClickHighlightingColor(@FloatRange(from = 0.0f, to = 1.0f) float alpha, @ColorInt int highlightingColor) {
     if (roundedDrawableParams != null) {
       roundedDrawableParams.setClickHighlightingColor(alpha, highlightingColor);
     }
@@ -348,13 +349,17 @@ public class SwImageView
       switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN: {
           // is touch started
-          updateARGBvalueAnimation(false);
+          updateARGBvalueAnimation(true);
+          break;
+        }
+        case MotionEvent.ACTION_MOVE:
+        case MotionEvent.ACTION_SCROLL: {
           break;
         }
         case MotionEvent.ACTION_UP:
         case MotionEvent.ACTION_CANCEL: {
           // cancle event
-          updateARGBvalueAnimation(true);
+          updateARGBvalueAnimation(false);
           break;
         }
       }
@@ -367,9 +372,10 @@ public class SwImageView
 
     if (roundedDrawableParams != null) {
       // animation of ARGB start color(EnterColor) to end color(ExitColor)
+      int defColor = roundedDrawableParams.getClickHighlightingColor().getDefaultColor();
       ValueAnimator valueAnimator = ofARGB(
-          isEnterAnimation ? roundedDrawableParams.getClickHighlightingColor().getDefaultColor() : RoundedDrawableParams.DEFAULT_DIMM_COLOR,
-          isEnterAnimation ? RoundedDrawableParams.DEFAULT_DIMM_COLOR : roundedDrawableParams.getClickHighlightingColor().getDefaultColor()
+          isEnterAnimation ? Color.TRANSPARENT : defColor,
+          isEnterAnimation ? defColor : Color.TRANSPARENT
       );
 
       // set animation durations

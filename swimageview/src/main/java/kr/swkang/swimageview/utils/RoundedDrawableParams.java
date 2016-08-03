@@ -7,6 +7,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.ImageView;
 
 /**
@@ -57,12 +58,12 @@ public class RoundedDrawableParams {
     return this;
   }
 
-  public RoundedDrawableParams setClickHighlightingColor(@IntRange(from = 0, to = 100) int alpha, @ColorInt int highlightingColor) {
+  public RoundedDrawableParams setClickHighlightingColor(@FloatRange(from = 0.0f, to = 1.0f) float alpha, @ColorInt int highlightingColor) {
     this.clickHighlightingColor = ColorStateList.valueOf(
-        Color.argb(alpha == 0 ? 0 : (alpha / 100 * 255),    // alpha
-                   (highlightingColor >> 16) & 0xFF,        // RED
-                   (highlightingColor >> 8) & 0xFF,         // GREEN
-                   highlightingColor & 0xFF                 // BLUE
+        Color.argb((int) (alpha == 0 ? 0 : (alpha * 255)),    // alpha
+                   Color.red(highlightingColor),            // RED
+                   Color.green(highlightingColor),          // GREEN
+                   Color.blue(highlightingColor)            // BLUE
         )
     );
     return this;
