@@ -1,5 +1,7 @@
 # SwImageView  
 
+[ ![Download](https://api.bintray.com/packages/burkdog/maven/swimageview/images/download.svg) ](https://bintray.com/burkdog/maven/swimageview/_latestVersion)
+  
 ### Features
 1. [Rounded corner Image drawable](https://github.com/vinc3m1/RoundedImageView/blob/master/roundedimageview/src/main/java/com/makeramen/roundedimageview/RoundedDrawable.java)
 2. Circle Image drawable
@@ -16,7 +18,7 @@
 ### Usage
 ```gradle
 dependencies {
-  
+  compile 'kr.swkang.swimageview:swimageview:x.x.x'  
 }
 ```
 - [See sample layout xml file](https://github.com/ksu3101/SwImageView/blob/master/app/src/main/res/layout/activity_sample.xml)
