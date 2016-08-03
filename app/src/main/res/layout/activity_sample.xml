@@ -70,7 +70,18 @@
          android:id="@+id/siv_5"
          android:layout_width="300dp"
          android:layout_height="200dp"
+         android:layout_marginBottom="20dp"
          android:clickable="true"/>
+
+      <kr.swkang.swimageview.SwImageView
+         android:id="@+id/siv_6"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:clickable="true"
+         android:src="@drawable/sample_img_1"
+         app:siv_click_color="#80000000"
+         app:siv_click_enter_duration="100"
+         app:siv_click_exit_duration="150"/>
 
    </LinearLayout>
 

@@ -18,7 +18,6 @@ public class ArgbEvaluatorCompat
    * be used in multiple <code>Animator</code>s because it holds no state.
    *
    * @return An instance of <code>ArgbEvalutor</code>.
-   * @hide
    */
   public static ArgbEvaluatorCompat getsInatance() {
     return sInatance;
