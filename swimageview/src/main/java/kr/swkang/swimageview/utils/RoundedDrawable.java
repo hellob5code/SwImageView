@@ -44,7 +44,6 @@ import android.widget.ImageView;
  */
 public class RoundedDrawable
     extends Drawable {
-
   public static final String TAG                  = "RoundedDrawable";
   public static final int    DEFAULT_BORDER_COLOR = Color.BLACK;
 
@@ -64,11 +63,14 @@ public class RoundedDrawable
   private Shader.TileMode mTileModeY     = Shader.TileMode.CLAMP;
   private boolean         mRebuildShader = true;
 
-  private float               mCornerRadius = 0;
-  private boolean             mOval         = false;
-  private float               mBorderWidth  = 0;
-  private ColorStateList      mBorderColor  = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
-  private ImageView.ScaleType mScaleType    = ImageView.ScaleType.FIT_CENTER;
+  private Corner cornerType;
+  private float  cornerRadius;
+  private RectF rectCorners = new RectF();
+
+  private boolean             mOval        = false;
+  private float               mBorderWidth = 0;
+  private ColorStateList      mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
+  private ImageView.ScaleType mScaleType   = ImageView.ScaleType.FIT_CENTER;
 
 
   public RoundedDrawable(Bitmap bitmap) {
@@ -292,15 +294,88 @@ public class RoundedDrawable
     }
 
     else {
-      if (mBorderWidth > 0) {
-        canvas.drawRoundRect(mDrawableRect, Math.max(mCornerRadius, 0), Math.max(mCornerRadius, 0), mBitmapPaint);
-        canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mBorderPaint);
+      drawRoundedRectangles(canvas);
+    }
+
+  }
+
+  private void drawRoundedRectangles(Canvas canvas) {
+    if (cornerType == Corner.NONE) {
+      canvas.drawRect(mDrawableRect, mBitmapPaint);
+    }
+    else {
+      canvas.drawRoundRect(mDrawableRect, cornerRadius, cornerRadius, mBitmapPaint);
+
+      float left = mDrawableRect.left;
+      float right = left + mDrawableRect.width();
+      float top = mDrawableRect.top;
+      float bottom = top + mDrawableRect.height();
+
+      if (cornerType == Corner.ALL) {
+
       }
       else {
-        canvas.drawRoundRect(mDrawableRect, mCornerRadius, mCornerRadius, mBitmapPaint);
+        switch (cornerType) {
+          case TOP: {
+            rectCorners.set(left, top + cornerRadius, right, bottom);
+            break;
+          }
+          case BOTTOM: {
+            rectCorners.set(left, top, right, bottom - cornerRadius);
+            break;
+          }
+          case LEFT: {
+            rectCorners.set(left + cornerRadius, top, right, bottom);
+            break;
+          }
+          case RIGHT: {
+            rectCorners.set(left, top, right - cornerRadius, bottom);
+            break;
+          }
+          case TOP_LEFT: {
+            rectCorners.set(left + cornerRadius, top, right, bottom);
+            canvas.drawRect(new RectF(left, top + cornerRadius, right, bottom), mBitmapPaint);
+            break;
+          }
+          case TOP_RIGHT: {
+            rectCorners.set(left, top, right - cornerRadius, bottom);
+            canvas.drawRect(new RectF(left, top + cornerRadius, right, bottom), mBitmapPaint);
+            break;
+          }
+          case BOTTOM_LEFT: {
+            rectCorners.set(left + cornerRadius, top, right, bottom);
+            canvas.drawRect(new RectF(left, top, right, bottom - cornerRadius), mBitmapPaint);
+            break;
+          }
+          case BOTTOM_RIGHT: {
+            rectCorners.set(left, top, right - cornerRadius, bottom);
+            canvas.drawRect(new RectF(left, top, right, bottom - cornerRadius), mBitmapPaint);
+            break;
+          }
+          case EXCEPT_TOP_LEFT: {
+            rectCorners.set(left, top, right - cornerRadius, bottom - cornerRadius);
+            break;
+          }
+          case EXCEPT_TOP_RIGHT: {
+            rectCorners.set(left + cornerRadius, top, right, bottom - cornerRadius);
+            break;
+          }
+          case EXCEPT_BOTTOM_LEFT: {
+            rectCorners.set(left, top + cornerRadius, right - cornerRadius, bottom);
+            break;
+          }
+          case EXCEPT_BOTTOM_RIGHT: {
+            rectCorners.set(left + cornerRadius, top + cornerRadius, right, bottom);
+            break;
+          }
+        } // switch case
+        canvas.drawRect(rectCorners, mBitmapPaint);
       }
     }
 
+    if (mBorderWidth > 0) {
+      canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+    }
   }
 
   @Override
@@ -352,12 +427,10 @@ public class RoundedDrawable
     return mBitmapHeight;
   }
 
-  public float getCornerRadius() {
-    return mCornerRadius;
-  }
-
-  public RoundedDrawable setCornerRadius(float radius) {
-    mCornerRadius = radius;
+  public RoundedDrawable setCorner(Corner corner, float cornerRadius) {
+    this.cornerType = corner;
+    this.cornerRadius = cornerRadius;
+    invalidateSelf();
     return this;
   }
 
@@ -441,6 +514,22 @@ public class RoundedDrawable
 
   public Bitmap toBitmap() {
     return drawableToBitmap(this);
+  }
+
+  private float findMax(float... values) {
+    float max = 0;
+    for (float v : values) {
+      if (v > max) max = v;
+    }
+    return max;
+  }
+
+  private float findMin(float... values) {
+    float min = Float.MAX_VALUE;
+    for (float v : values) {
+      if (v < min) min = v;
+    }
+    return min;
   }
 
 }

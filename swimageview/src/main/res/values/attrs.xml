@@ -6,7 +6,25 @@
       <attr name="siv_enable_transition" format="boolean"/>
       <attr name="siv_transition_duration" format="integer"/>
 
+      <!-- all corners -->
       <attr name="siv_corner_radius" format="dimension"/>
+      <attr name="siv_corner_type" format="enum">
+         <enum name="none" value="0"/>
+         <enum name="all" value="1"/>
+         <enum name="top" value="2"/>
+         <enum name="bottom" value="3"/>
+         <enum name="left" value="4"/>
+         <enum name="right" value="5"/>
+         <enum name="top_left" value="6"/>
+         <enum name="top_right" value="7"/>
+         <enum name="bottom_left" value="8"/>
+         <enum name="bottom_right" value="9"/>
+         <enum name="except_top_left" value="10"/>
+         <enum name="except_top_right" value="11"/>
+         <enum name="except_bottom_left" value="12"/>
+         <enum name="except_bottom_right" value="13"/>
+      </attr>
+
       <attr name="siv_border_width" format="dimension"/>
       <attr name="siv_border_color" format="reference|color"/>
 

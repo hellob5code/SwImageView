@@ -23,6 +23,7 @@ public class RoundedDrawableParams {
   private ImageView.ScaleType scaleType;
   @FloatRange(from = 0f)
   private float               cornerRadius;
+  private Corner              cornerType;
   @FloatRange(from = 0f)
   private float               borderWidth;
   private ColorStateList      borderColor;
@@ -37,6 +38,7 @@ public class RoundedDrawableParams {
     // initialize parameters to default value
     this.scaleType = ImageView.ScaleType.CENTER_CROP;
     this.cornerRadius = DEFAULT_CORNER_RADIUS;
+    this.cornerType = Corner.NONE;
     this.borderWidth = DEFAULT_BORDER_WIDTH;
     this.borderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
     this.isOval = false;
@@ -87,11 +89,8 @@ public class RoundedDrawableParams {
     return this;
   }
 
-  public float getCornerRadius() {
-    return cornerRadius;
-  }
-
-  public RoundedDrawableParams setCornerRadius(@FloatRange(from = 0f) float cornerRadius) {
+  public RoundedDrawableParams setRoundedCorner(@NonNull Corner cornerType, @FloatRange(from = 0f) float cornerRadius) {
+    this.cornerType = cornerType;
     this.cornerRadius = cornerRadius;
     return this;
   }
@@ -154,4 +153,13 @@ public class RoundedDrawableParams {
   public int getClickExitDuration() {
     return clickExitDuration;
   }
+
+  public float getCornerRadius() {
+    return cornerRadius;
+  }
+
+  public Corner getCornerType() {
+    return cornerType;
+  }
+
 }

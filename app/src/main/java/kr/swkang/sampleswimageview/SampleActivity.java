@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.squareup.picasso.Picasso;
 
 import kr.swkang.swimageview.SwImageView;
+import kr.swkang.swimageview.utils.Corner;
 import kr.swkang.swimageview.utils.RoundedDrawableParams;
 
 public class SampleActivity
@@ -33,9 +34,9 @@ public class SampleActivity
 
     SwImageView siv4 = (SwImageView) findViewById(R.id.siv_4);
     siv4.setImageResource(R.drawable.sample_img_3);
-    siv4.setCornerRadius(40);   // px
-    siv4.setBorderColor(Color.RED);
-    siv4.setBorderWidth(15);
+    siv4.setRoundedCorner(Corner.BOTTOM_RIGHT, 40);
+    //siv4.setBorderColor(Color.RED);
+    //siv4.setBorderWidth(15);
     siv4.setTransitionDuration(200);
     siv4.setClickHighlightingColor(0.4f, Color.rgb(255, 0, 0));
     siv4.setClickEnterAnimDuration(500);
@@ -44,9 +45,9 @@ public class SampleActivity
     SwImageView siv5 = (SwImageView) findViewById(R.id.siv_5);
     siv5.setRoundedDrawableParams(
         new RoundedDrawableParams()
-            .setCornerRadius(80)
-            .setBorderColor(Color.LTGRAY)
-            .setBorderWidth(20)
+            .setRoundedCorner(Corner.BOTTOM_RIGHT, 80)
+            //.setBorderColor(Color.LTGRAY)
+            //.setBorderWidth(20)
             .setClickHighlightingColor(Color.argb(160, 107, 185, 240))
             .setClickEnterAnimDuration(150)
             .setClickExitAnimDuration(200)
