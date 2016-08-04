@@ -25,6 +25,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import kr.swkang.swimageview.utils.ArgbEvaluatorCompat;
+import kr.swkang.swimageview.utils.Corner;
 import kr.swkang.swimageview.utils.RoundedDrawable;
 import kr.swkang.swimageview.utils.RoundedDrawableParams;
 
@@ -76,9 +77,14 @@ public class SwImageView
       final ScaleType scaleType = scaleTypes[scaleTypeIndex];
       roundedDrawableParams.setScaleType(scaleType);
 
+      // corner type
+      Corner cornerType = Corner.NONE;
+      final int cornerTypeValue = a.getInt(R.styleable.SwImageView_siv_corner_type, Corner.NONE.getValue());
+      cornerType = Corner.parseFromValue(cornerTypeValue);
+
       // corner radius
       final float cornerRadius = (float) a.getDimensionPixelSize(R.styleable.SwImageView_siv_corner_radius, (int) RoundedDrawableParams.DEFAULT_CORNER_RADIUS);
-      roundedDrawableParams.setCornerRadius(cornerRadius);
+      roundedDrawableParams.setRoundedCorner(cornerType, cornerRadius);
 
       // border width
       final float borderWidth = (float) a.getDimensionPixelSize(R.styleable.SwImageView_siv_border_width, (int) RoundedDrawableParams.DEFAULT_BORDER_WIDTH);
@@ -159,7 +165,7 @@ public class SwImageView
       if (drawable instanceof RoundedDrawable) {
         RoundedDrawable rd = (RoundedDrawable) drawable;
         rd.setScaleType(roundedDrawableParams.getScaleType())
-          .setCornerRadius(roundedDrawableParams.getCornerRadius())
+          .setCorner(roundedDrawableParams.getCornerType(), roundedDrawableParams.getCornerRadius())
           .setBorderWidth(roundedDrawableParams.getBorderWidth())
           .setBorderColor(roundedDrawableParams.getBorderColor())
           .setOval(roundedDrawableParams.isOval())
@@ -181,6 +187,10 @@ public class SwImageView
     updateRoundedDrawableParameters(drawable);
   }
 
+  public RoundedDrawableParams getRoundedDrawableParams() {
+    return this.roundedDrawableParams;
+  }
+
   public void setEnableTransition(boolean isEnable) {
     this.isEnableTransition = isEnable;
   }
@@ -199,14 +209,6 @@ public class SwImageView
       updateRoundedDrawableParameters(drawable);
       invalidate();
     }
-  }
-
-  public void setCornerRadius(@FloatRange(from = 0f) float cornerRadius) {
-    if (roundedDrawableParams != null) {
-      roundedDrawableParams.setCornerRadius(cornerRadius);
-    }
-    updateRoundedDrawableParameters(drawable);
-    invalidate();
   }
 
   public void setBorderWidth(@FloatRange(from = 0f) float borderWidth) {
@@ -287,6 +289,26 @@ public class SwImageView
     }
     updateRoundedDrawableParameters(drawable);
     invalidate();
+  }
+
+  public void setRoundedCorner(@NonNull Corner cornerType, @FloatRange(from = 0f) float cornerRadius) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setRoundedCorner(cornerType, cornerRadius);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setRoundedCornerRadius(@FloatRange(from = 0f) float cornerRadius) {
+    if (roundedDrawableParams != null) {
+      setRoundedCorner(roundedDrawableParams.getCornerType(), cornerRadius);
+    }
+  }
+
+  public void setRoundedCornerType(@NonNull Corner cornerType) {
+    if (roundedDrawableParams != null) {
+      setRoundedCorner(cornerType, roundedDrawableParams.getCornerRadius());
+    }
   }
 
   @Override
