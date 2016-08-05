@@ -311,10 +311,7 @@ public class RoundedDrawable
       float top = mDrawableRect.top;
       float bottom = top + mDrawableRect.height();
 
-      if (cornerType == Corner.ALL) {
-
-      }
-      else {
+      if (cornerType != Corner.ALL) {
         switch (cornerType) {
           case TOP: {
             rectCorners.set(left, top + cornerRadius, right, bottom);
@@ -371,10 +368,12 @@ public class RoundedDrawable
         } // switch case
         canvas.drawRect(rectCorners, mBitmapPaint);
       }
-    }
-
-    if (mBorderWidth > 0) {
-      canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+      else {
+        if (mBorderWidth > 0) {
+          // draw border
+          canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+        }
+      }
     }
   }
 
