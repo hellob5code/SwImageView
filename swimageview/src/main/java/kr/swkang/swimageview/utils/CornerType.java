@@ -4,7 +4,7 @@ package kr.swkang.swimageview.utils;
  * @author kangSung-Woo
  * @since 2016/08/04
  */
-public enum Corner {
+public enum CornerType {
   NONE(0),
   ALL(1),
   TOP(2),
@@ -22,7 +22,7 @@ public enum Corner {
 
   int value;
 
-  Corner(int v) {
+  CornerType(int v) {
     this.value = v;
   }
 
@@ -30,7 +30,7 @@ public enum Corner {
     return value;
   }
 
-  public static Corner parseFromValue(int value) {
+  public static CornerType parseFromValue(int value) {
     switch (value) {
       case 1:
         return ALL;

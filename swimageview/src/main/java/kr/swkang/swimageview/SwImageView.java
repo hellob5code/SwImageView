@@ -25,7 +25,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import kr.swkang.swimageview.utils.ArgbEvaluatorCompat;
-import kr.swkang.swimageview.utils.Corner;
+import kr.swkang.swimageview.utils.CornerType;
 import kr.swkang.swimageview.utils.RoundedDrawable;
 import kr.swkang.swimageview.utils.RoundedDrawableParams;
 
@@ -78,9 +78,9 @@ public class SwImageView
       roundedDrawableParams.setScaleType(scaleType);
 
       // corner type
-      Corner cornerType = Corner.NONE;
-      final int cornerTypeValue = a.getInt(R.styleable.SwImageView_siv_corner_type, Corner.NONE.getValue());
-      cornerType = Corner.parseFromValue(cornerTypeValue);
+      CornerType cornerType = CornerType.NONE;
+      final int cornerTypeValue = a.getInt(R.styleable.SwImageView_siv_corner_type, CornerType.NONE.getValue());
+      cornerType = CornerType.parseFromValue(cornerTypeValue);
 
       // corner radius
       final float cornerRadius = (float) a.getDimensionPixelSize(R.styleable.SwImageView_siv_corner_radius, (int) RoundedDrawableParams.DEFAULT_CORNER_RADIUS);
@@ -291,7 +291,7 @@ public class SwImageView
     invalidate();
   }
 
-  public void setRoundedCorner(@NonNull Corner cornerType, @FloatRange(from = 0f) float cornerRadius) {
+  public void setRoundedCorner(@NonNull CornerType cornerType, @FloatRange(from = 0f) float cornerRadius) {
     if (roundedDrawableParams != null) {
       roundedDrawableParams.setRoundedCorner(cornerType, cornerRadius);
     }
@@ -305,7 +305,7 @@ public class SwImageView
     }
   }
 
-  public void setRoundedCornerType(@NonNull Corner cornerType) {
+  public void setRoundedCornerType(@NonNull CornerType cornerType) {
     if (roundedDrawableParams != null) {
       setRoundedCorner(cornerType, roundedDrawableParams.getCornerRadius());
     }
