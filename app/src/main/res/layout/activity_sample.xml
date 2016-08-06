@@ -30,6 +30,7 @@
          app:siv_click_enter_duration="150"
          app:siv_click_exit_duration="300"
          app:siv_corner_radius="20dp"
+         app:siv_corner_type="all"
          app:siv_enable_transition="true"
          app:siv_transition_duration="250"/>
 
@@ -39,10 +40,13 @@
          android:layout_height="200dp"
          android:layout_marginBottom="20dp"
          android:clickable="true"
+         app:siv_border_color="#F9690E"
+         app:siv_border_width="5dp"
          app:siv_click_color="#80000000"
          app:siv_click_enter_duration="250"
          app:siv_click_exit_duration="350"
          app:siv_corner_radius="8dp"
+         app:siv_corner_type="left"
          app:siv_enable_transition="true"
          app:siv_transition_duration="1000"/>
 

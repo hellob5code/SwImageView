@@ -313,42 +313,190 @@ public class RoundedDrawable
 
       final boolean drawBorder = (mBorderWidth > 0);
       float offset = (drawBorder ? mBorderWidth / 2 : 0);
+      if (offset < 0) offset = 0;
 
       switch (cornerType) {
+        case ALL: {
+          // draw border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          break;
+        }
         case TOP: {
-          rectCorners.set(left, top + cornerRadius, right, bottom);
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + offset, top + cornerRadius + offset, right - offset, bottom - offset);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // bottom left corner
+            canvas.drawLine(left - cornerRadius, bottom, left + cornerRadius, bottom, mBorderPaint);
+            canvas.drawLine(left, bottom - cornerRadius, left, bottom, mBorderPaint);
+            // bottom right corner
+            canvas.drawLine(right - cornerRadius - offset, bottom, right + offset, bottom, mBorderPaint);
+            canvas.drawLine(right, bottom - cornerRadius, right, bottom, mBorderPaint);
+          }
           break;
         }
         case BOTTOM: {
-          rectCorners.set(left, top, right, bottom - cornerRadius);
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + offset, top + offset, right - offset, bottom - cornerRadius - offset);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top left corner
+            canvas.drawLine(left - offset, top, left + cornerRadius, top, mBorderPaint);
+            canvas.drawLine(left, top - offset, left, top + cornerRadius, mBorderPaint);
+            // top right corner
+            canvas.drawLine(right - cornerRadius - offset, top, right, top, mBorderPaint);
+            canvas.drawLine(right, top - offset, right, top + cornerRadius, mBorderPaint);
+          }
           break;
         }
         case LEFT: {
-          rectCorners.set(left + cornerRadius, top, right, bottom);
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + cornerRadius + offset, top + offset, right - offset, bottom - offset);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top right corner
+            canvas.drawLine(right - cornerRadius - offset, bottom, right + offset, bottom, mBorderPaint);
+            canvas.drawLine(right, bottom - cornerRadius, right, bottom, mBorderPaint);
+            // bottom right corner
+            canvas.drawLine(right - cornerRadius - offset, top, right, top, mBorderPaint);
+            canvas.drawLine(right, top - offset, right, top + cornerRadius, mBorderPaint);
+          }
           break;
         }
         case RIGHT: {
-          rectCorners.set(left, top, right - cornerRadius, bottom);
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + offset, top + offset, right - cornerRadius - offset, bottom - offset);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top left corner
+            canvas.drawLine(left - cornerRadius, bottom, left + cornerRadius, bottom, mBorderPaint);
+            canvas.drawLine(left, bottom - cornerRadius, left, bottom, mBorderPaint);
+            // bottom left corner
+            canvas.drawLine(left - offset, top, left + cornerRadius, top, mBorderPaint);
+            canvas.drawLine(left, top - offset, left, top + cornerRadius, mBorderPaint);
+          }
           break;
         }
         case TOP_LEFT: {
-          rectCorners.set(left + cornerRadius, top, right, bottom);
-          canvas.drawRect(new RectF(left, top + cornerRadius, right, bottom), mBitmapPaint);
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + cornerRadius + offset, top + offset, right - offset, bottom - offset);
+          canvas.drawRect(new RectF(left + offset, top + cornerRadius + offset, right - offset, bottom - offset), mBitmapPaint);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top right corner
+            canvas.drawLine(right - cornerRadius - offset, top, right, top, mBorderPaint);
+            canvas.drawLine(right, top - offset, right, top + cornerRadius, mBorderPaint);
+            // bottom left corner
+            canvas.drawLine(left - cornerRadius, bottom, left + cornerRadius, bottom, mBorderPaint);
+            canvas.drawLine(left, bottom - cornerRadius, left, bottom, mBorderPaint);
+            // bottom right corner
+            canvas.drawLine(right - cornerRadius - offset, bottom, right + offset, bottom, mBorderPaint);
+            canvas.drawLine(right, bottom - cornerRadius, right, bottom, mBorderPaint);
+          }
           break;
         }
         case TOP_RIGHT: {
-          rectCorners.set(left, top, right - cornerRadius, bottom);
-          canvas.drawRect(new RectF(left, top + cornerRadius, right, bottom), mBitmapPaint);
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + offset, top + offset, right - cornerRadius - offset, bottom - offset);
+          canvas.drawRect(new RectF(left + offset, top + cornerRadius + offset, right - offset, bottom - offset), mBitmapPaint);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top left corner
+            canvas.drawLine(left - offset, top, left + cornerRadius, top, mBorderPaint);
+            canvas.drawLine(left, top - offset, left, top + cornerRadius, mBorderPaint);
+            // bottom left corner
+            canvas.drawLine(left - cornerRadius, bottom, left + cornerRadius, bottom, mBorderPaint);
+            canvas.drawLine(left, bottom - cornerRadius, left, bottom, mBorderPaint);
+            // bottom right corner
+            canvas.drawLine(right - cornerRadius - offset, bottom, right + offset, bottom, mBorderPaint);
+            canvas.drawLine(right, bottom - cornerRadius, right, bottom, mBorderPaint);
+          }
           break;
         }
         case BOTTOM_LEFT: {
-          rectCorners.set(left + cornerRadius, top, right, bottom);
-          canvas.drawRect(new RectF(left, top, right, bottom - cornerRadius), mBitmapPaint);
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + cornerRadius + offset, top + offset, right - offset, bottom - offset);
+          canvas.drawRect(new RectF(left + offset, top + offset, right - offset, bottom - cornerRadius - offset), mBitmapPaint);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top left corner
+            canvas.drawLine(left - offset, top, left + cornerRadius, top, mBorderPaint);
+            canvas.drawLine(left, top - offset, left, top + cornerRadius, mBorderPaint);
+            // top right corner
+            canvas.drawLine(right - cornerRadius - offset, top, right, top, mBorderPaint);
+            canvas.drawLine(right, top - offset, right, top + cornerRadius, mBorderPaint);
+            // bottom right corner
+            canvas.drawLine(right - cornerRadius - offset, bottom, right + offset, bottom, mBorderPaint);
+            canvas.drawLine(right, bottom - cornerRadius, right, bottom, mBorderPaint);
+          }
           break;
         }
         case BOTTOM_RIGHT: {
-          rectCorners.set(left, top, right - cornerRadius, bottom);
-          canvas.drawRect(new RectF(left, top, right, bottom - cornerRadius), mBitmapPaint);
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + offset, top + offset, right - cornerRadius - offset, bottom - offset);
+          canvas.drawRect(new RectF(left + offset, top + offset, right - offset, bottom - cornerRadius - offset), mBitmapPaint);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top left corner
+            canvas.drawLine(left - offset, top, left + cornerRadius, top, mBorderPaint);
+            canvas.drawLine(left, top - offset, left, top + cornerRadius, mBorderPaint);
+            // top right corner
+            canvas.drawLine(right - cornerRadius - offset, top, right, top, mBorderPaint);
+            canvas.drawLine(right, top - offset, right, top + cornerRadius, mBorderPaint);
+            // bottom left corner
+            canvas.drawLine(left - cornerRadius, bottom, left + cornerRadius, bottom, mBorderPaint);
+            canvas.drawLine(left, bottom - cornerRadius, left, bottom, mBorderPaint);
+          }
           break;
         }
         case EXCEPT_TOP_LEFT: {

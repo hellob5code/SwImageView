@@ -423,7 +423,9 @@ public class SwImageView
           new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-              SwImageView.this.clearColorFilter();
+              if (!isEnterAnimation) {
+                SwImageView.this.clearColorFilter();
+              }
             }
           }
       );
