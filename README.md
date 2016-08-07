@@ -2,20 +2,20 @@
 
 [ ![Download](https://api.bintray.com/packages/burkdog/maven/swimageview/images/download.svg) ](https://bintray.com/burkdog/maven/swimageview/_latestVersion)
   
-### Features
-1. [Rounded corner Image drawable](https://github.com/vinc3m1/RoundedImageView/blob/master/roundedimageview/src/main/java/com/makeramen/roundedimageview/RoundedDrawable.java)
-2. Circle Image drawable
-3. Border color/width 
-4. Click on highlighting animation effect (with enter, exit animation duration)
-5. Loaded image transition animation effect. 
+### 1. Features
+ - [Rounded corner Image drawable](https://github.com/vinc3m1/RoundedImageView/blob/master/roundedimageview/src/main/java/com/makeramen/roundedimageview/RoundedDrawable.java)
+ - Circle Image drawable
+ - Border color/width 
+ - Click on highlighting animation effect (with enter, exit animation duration)
+ - Loaded image transition animation effect. 
 
-#### Todo List
-1. specify corner image drawable. 
+### 2. Todo List
+ - specify corner image drawable. 
 
-### ScreenShot
+### 3. ScreenShot
  update soon..  
 
-### Usage
+### 4. Usage
 ```gradle
 dependencies {
   compile 'kr.swkang.swimageview:swimageview:x.x.x'  
@@ -81,8 +81,9 @@ Picasso.with(this)
        .into(siv5);
 ```
 
-### Customization
+### 5. Customization
  update soon..  
 
-### License 
+### 6. License 
+ update soon..  
 
