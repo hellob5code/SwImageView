@@ -84,6 +84,12 @@ public class SwImageView
 
       // corner radius
       final float cornerRadius = (float) a.getDimensionPixelSize(R.styleable.SwImageView_siv_corner_radius, (int) RoundedDrawableParams.DEFAULT_CORNER_RADIUS);
+      if (cornerRadius > 0) {
+        if (cornerType == CornerType.NONE) {
+          // set Default
+          cornerType = CornerType.ALL;
+        }
+      }
       roundedDrawableParams.setRoundedCorner(cornerType, cornerRadius);
 
       // border width

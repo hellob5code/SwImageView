@@ -29,7 +29,7 @@ publish {
     userOrg = 'burkdog'
     groupId = 'kr.swkang.swimageview'
     artifactId = 'swimageview'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.1'
     desc = 'SW ImageView'
     website = 'https://github.com/ksu3101/SwImageView'
     issueTracker = 'https://github.com/ksu3101/SwImageView/issues'

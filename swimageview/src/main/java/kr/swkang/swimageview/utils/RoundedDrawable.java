@@ -39,7 +39,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 /**
- * @author KangSung-Woo
+ * @author (Edited by) KangSung-Woo
  * @since 2016/08/03
  */
 public class RoundedDrawable
