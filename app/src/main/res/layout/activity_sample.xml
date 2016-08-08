@@ -51,16 +51,33 @@
          app:siv_transition_duration="1000"/>
 
       <kr.swkang.swimageview.SwImageView
+         android:layout_width="200dp"
+         android:layout_height="200dp"
+         android:layout_marginBottom="20dp"
+         android:clickable="true"
+         android:src="@drawable/sample_img_2"
+         app:siv_border_color="#F7CA18"
+         app:siv_border_width="5dp"
+         app:siv_click_color="#80000000"
+         app:siv_click_enter_duration="100"
+         app:siv_click_exit_duration="150"
+         app:siv_enable_transition="true"
+         app:siv_shapetype="oval"
+         app:siv_transition_duration="500"/>
+
+      <kr.swkang.swimageview.SwImageView
          android:id="@+id/siv_3"
          android:layout_width="200dp"
          android:layout_height="200dp"
          android:layout_marginBottom="20dp"
          android:clickable="true"
+         app:siv_border_color="#F7CA18"
+         app:siv_border_width="5dp"
          app:siv_click_color="#80000000"
          app:siv_click_enter_duration="100"
          app:siv_click_exit_duration="150"
          app:siv_enable_transition="true"
-         app:siv_is_oval="true"
+         app:siv_shapetype="circle"
          app:siv_transition_duration="500"/>
 
       <kr.swkang.swimageview.SwImageView

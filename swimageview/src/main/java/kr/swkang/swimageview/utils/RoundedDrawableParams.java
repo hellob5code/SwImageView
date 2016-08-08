@@ -27,7 +27,7 @@ public class RoundedDrawableParams {
   @FloatRange(from = 0f)
   private float               borderWidth;
   private ColorStateList      borderColor;
-  private boolean             isOval;
+  private ShapeType           shapeType;
   private Shader.TileMode     tileModeX;
   private Shader.TileMode     tileModeY;
   private ColorStateList      clickHighlightingColor;
@@ -41,7 +41,7 @@ public class RoundedDrawableParams {
     this.cornerType = CornerType.NONE;
     this.borderWidth = DEFAULT_BORDER_WIDTH;
     this.borderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
-    this.isOval = false;
+    this.shapeType = ShapeType.RECTANGLE;
     this.tileModeX = Shader.TileMode.CLAMP;
     this.tileModeY = Shader.TileMode.CLAMP;
     this.clickHighlightingColor = ColorStateList.valueOf(DEFAULT_DIMM_COLOR);
@@ -54,8 +54,8 @@ public class RoundedDrawableParams {
     return this;
   }
 
-  public RoundedDrawableParams setOvalImage(boolean isOval) {
-    this.isOval = isOval;
+  public RoundedDrawableParams setShapeType(@NonNull ShapeType shapeType) {
+    this.shapeType = shapeType;
     return this;
   }
 
@@ -115,10 +115,6 @@ public class RoundedDrawableParams {
     return this;
   }
 
-  public boolean isOval() {
-    return isOval;
-  }
-
   public Shader.TileMode getTileModeX() {
     return tileModeX;
   }
@@ -162,4 +158,7 @@ public class RoundedDrawableParams {
     return cornerType;
   }
 
+  public ShapeType getShapeType() {
+    return shapeType;
+  }
 }

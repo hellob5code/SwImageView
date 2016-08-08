@@ -15,7 +15,6 @@
 *
 * 참고:
 * https://github.com/vinc3m1/RoundedImageView/blob/master/roundedimageview/src/main/java/com/makeramen/roundedimageview/RoundedDrawable.java
-*
 */
 
 package kr.swkang.swimageview.utils;
@@ -67,7 +66,7 @@ public class RoundedDrawable
   private float      cornerRadius;
   private RectF rectCorners = new RectF();
 
-  private boolean             mOval        = false;
+  private ShapeType           shapeType    = ShapeType.RECTANGLE;
   private float               mBorderWidth = 0;
   private ColorStateList      mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
   private ImageView.ScaleType mScaleType   = ImageView.ScaleType.FIT_CENTER;
@@ -283,13 +282,19 @@ public class RoundedDrawable
       mRebuildShader = false;
     }
 
-    if (mOval) {
+    if (shapeType == ShapeType.OVAL) {
+      canvas.drawOval(mDrawableRect, mBitmapPaint);
       if (mBorderWidth > 0) {
-        canvas.drawOval(mDrawableRect, mBitmapPaint);
         canvas.drawOval(mBorderRect, mBorderPaint);
       }
-      else {
-        canvas.drawOval(mDrawableRect, mBitmapPaint);
+    }
+
+    else if (shapeType == ShapeType.CIRCLE) {
+      final float minSizeToRadius = (Math.min(mDrawableRect.right, mDrawableRect.bottom) / 2);
+      canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), minSizeToRadius, mBitmapPaint);
+      if (mBorderWidth > 0) {
+        final float minBorderSizeToRadius = (Math.min(mBorderRect.right, mBorderRect.bottom) / 2);
+        canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), minBorderSizeToRadius, mBorderPaint);
       }
     }
 
@@ -651,12 +656,8 @@ public class RoundedDrawable
     return mBorderColor;
   }
 
-  public boolean isOval() {
-    return mOval;
-  }
-
-  public RoundedDrawable setOval(boolean oval) {
-    mOval = oval;
+  public RoundedDrawable setShapeType(ShapeType shapeType) {
+    this.shapeType = shapeType;
     return this;
   }
 

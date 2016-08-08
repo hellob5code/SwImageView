@@ -28,6 +28,7 @@ import kr.swkang.swimageview.utils.ArgbEvaluatorCompat;
 import kr.swkang.swimageview.utils.CornerType;
 import kr.swkang.swimageview.utils.RoundedDrawable;
 import kr.swkang.swimageview.utils.RoundedDrawableParams;
+import kr.swkang.swimageview.utils.ShapeType;
 
 /**
  * @author KangSung-Woo
@@ -102,9 +103,9 @@ public class SwImageView
         roundedDrawableParams.setBorderColorList(borderColor);
       }
 
-      // is oval image
-      final boolean isOval = a.getBoolean(R.styleable.SwImageView_siv_is_oval, false);
-      roundedDrawableParams.setOvalImage(isOval);
+      // get shape type
+      final int shapeTypeValue = a.getInt(R.styleable.SwImageView_siv_shapetype, ShapeType.RECTANGLE.getValue());
+      roundedDrawableParams.setShapeType(ShapeType.parseFromValue(shapeTypeValue));
 
       // x, y tile mode
       final int tileModeValue = a.getInt(R.styleable.SwImageView_siv_tileMode, -1);
@@ -174,7 +175,7 @@ public class SwImageView
           .setCorner(roundedDrawableParams.getCornerType(), roundedDrawableParams.getCornerRadius())
           .setBorderWidth(roundedDrawableParams.getBorderWidth())
           .setBorderColor(roundedDrawableParams.getBorderColor())
-          .setOval(roundedDrawableParams.isOval())
+          .setShapeType(roundedDrawableParams.getShapeType())
           .setTileModeX(roundedDrawableParams.getTileModeX())
           .setTileModeY(roundedDrawableParams.getTileModeY());
 
@@ -241,9 +242,9 @@ public class SwImageView
     invalidate();
   }
 
-  public void setOvalImage(boolean isOval) {
+  public void setShapeType(@NonNull ShapeType shapeType) {
     if (roundedDrawableParams != null) {
-      roundedDrawableParams.setOvalImage(isOval);
+      roundedDrawableParams.setShapeType(shapeType);
     }
     updateRoundedDrawableParameters(drawable);
     invalidate();

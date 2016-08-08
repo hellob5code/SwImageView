@@ -28,21 +28,19 @@
       <attr name="siv_border_width" format="dimension"/>
       <attr name="siv_border_color" format="reference|color"/>
 
-      <attr name="siv_is_oval" format="boolean"/>
-
-      <attr name="siv_tileMode">
+      <attr name="siv_tileMode" format="enum">
          <enum name="clamp" value="0"/>
          <enum name="repeat" value="1"/>
          <enum name="mirror" value="2"/>
       </attr>
 
-      <attr name="siv_tileMode_x">
+      <attr name="siv_tileMode_x" format="enum">
          <enum name="clamp" value="0"/>
          <enum name="repeat" value="1"/>
          <enum name="mirror" value="2"/>
       </attr>
 
-      <attr name="siv_tileMode_y">
+      <attr name="siv_tileMode_y" format="enum">
          <enum name="clamp" value="0"/>
          <enum name="repeat" value="1"/>
          <enum name="mirror" value="2"/>
@@ -54,6 +52,12 @@
       <attr name="siv_click_exit_duration" format="integer"/>
 
       <attr name="android:scaleType"/>
+
+      <attr name="siv_shapetype" format="enum">
+         <enum name="rectangle" value="0"/>
+         <enum name="oval" value="1"/>
+         <enum name="circle" value="2"/>
+      </attr>
 
    </declare-styleable>
 
