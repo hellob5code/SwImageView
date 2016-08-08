@@ -15,6 +15,8 @@
 - 1.0.1 
  - enable rounded rectangle [corner type](https://github.com/ksu3101/SwImageView/blob/master/swimageview/src/main/java/kr/swkang/swimageview/utils/CornerType.java). 
  - bug fixed 
+- 1.0.2
+ - apply [ShapeType](https://github.com/ksu3101/SwImageView/blob/master/swimageview/src/main/java/kr/swkang/swimageview/utils/ShapeType.java) modes. it has `RECTANGLE`, `OVAL`, `CIRCLE`. 
 
 ---
 ### 4. ScreenShot
@@ -42,6 +44,7 @@ dependencies {
    app:siv_click_exit_duration="300"
    app:siv_corner_radius="20dp"
    app:siv_corner_type="all"
+   app:siv_shapetype="circle"
    app:siv_enable_transition="true"
    app:siv_transition_duration="250"/>
 ```
