@@ -34,7 +34,6 @@ public class SampleActivity
 
     SwImageView siv4 = (SwImageView) findViewById(R.id.siv_4);
     siv4.setImageResource(R.drawable.sample_img_3);
-    siv4.setRoundedCorner(CornerType.BOTTOM_RIGHT, 40);
     siv4.setBorderColor(Color.RED);
     siv4.setBorderWidth(15);
     siv4.setTransitionDuration(200);
