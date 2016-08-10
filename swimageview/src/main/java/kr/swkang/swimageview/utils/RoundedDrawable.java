@@ -316,9 +316,10 @@ public class RoundedDrawable
       final float top = mDrawableRect.top;
       final float bottom = top + mDrawableRect.height();
 
-      final boolean drawBorder = (mBorderWidth > 0);
-      float offset = (drawBorder ? mBorderWidth / 2 : 0);
+      float offset = (mBorderWidth > 0 ? mBorderWidth / 2 : 0);
       if (offset < 0) offset = 0;
+
+      final boolean drawBorder = (mBorderWidth > 0);
 
       switch (cornerType) {
         case ALL: {
@@ -568,6 +569,51 @@ public class RoundedDrawable
           }
           break;
         }
+
+        // added on 2016/08/10
+        case TOP_LEFT_WITH_BOTTOM_RIGHT: {
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + cornerRadius + offset, top + offset, right - offset, bottom - cornerRadius - offset);
+          canvas.drawRect(new RectF(left + offset, bottom - cornerRadius - offset, right - cornerRadius - offset, bottom - offset), mBitmapPaint);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top right corner
+            canvas.drawLine(right - cornerRadius - offset, top, right, top, mBorderPaint);
+            canvas.drawLine(right, top - offset, right, top + cornerRadius, mBorderPaint);
+            // bottom left corner
+            canvas.drawLine(left - cornerRadius, bottom, left + cornerRadius, bottom, mBorderPaint);
+            canvas.drawLine(left, bottom - cornerRadius, left, bottom, mBorderPaint);
+          }
+          break;
+        }
+        // added on 2016/08/10
+        case TOP_RIGHT_WITH_BOTTOM_LEFT: {
+          // draw base border
+          if (drawBorder) {
+            canvas.drawRoundRect(mBorderRect, cornerRadius, cornerRadius, mBorderPaint);
+          }
+          // excepted corner drawing
+          rectCorners.set(left + offset, top + offset, right - cornerRadius - offset, bottom - cornerRadius - offset);
+          canvas.drawRect(new RectF(left + cornerRadius + offset, bottom - cornerRadius - offset, right - offset, bottom - offset), mBitmapPaint);
+          canvas.drawRect(rectCorners, mBitmapPaint);
+
+          // draw corner border
+          if (drawBorder) {
+            // top left corner
+            canvas.drawLine(left - offset, top, left + cornerRadius, top, mBorderPaint);
+            canvas.drawLine(left, top - offset, left, top + cornerRadius, mBorderPaint);
+            // bottom right corner
+            canvas.drawLine(right - cornerRadius - offset, bottom, right + offset, bottom, mBorderPaint);
+            canvas.drawLine(right, bottom - cornerRadius, right, bottom, mBorderPaint);
+          }
+          break;
+        }
       } // end of 'Corner Rectangle' switch case
     }
   } // end of `drawRoundedRectangles()` methods
@@ -721,5 +767,6 @@ public class RoundedDrawable
     }
     return min;
   }
+
 
 }

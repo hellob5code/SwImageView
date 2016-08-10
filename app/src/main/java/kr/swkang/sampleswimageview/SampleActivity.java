@@ -44,7 +44,7 @@ public class SampleActivity
     SwImageView siv5 = (SwImageView) findViewById(R.id.siv_5);
     siv5.setRoundedDrawableParams(
         new RoundedDrawableParams()
-            .setRoundedCorner(CornerType.EXCEPT_TOP_LEFT, 80)
+            .setRoundedCorner(CornerType.TOP_RIGHT_WITH_BOTTOM_LEFT, 80)
             .setBorderColor(Color.LTGRAY)
             .setBorderWidth(20)
             .setClickHighlightingColor(Color.argb(160, 107, 185, 240))

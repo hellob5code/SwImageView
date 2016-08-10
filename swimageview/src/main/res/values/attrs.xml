@@ -23,6 +23,8 @@
          <enum name="except_top_right" value="11"/>
          <enum name="except_bottom_left" value="12"/>
          <enum name="except_bottom_right" value="13"/>
+         <enum name="top_left_with_botom_right" value="14"/>
+         <enum name="top_right_with_bottom_left" value="15"/>
       </attr>
 
       <attr name="siv_border_width" format="dimension"/>
