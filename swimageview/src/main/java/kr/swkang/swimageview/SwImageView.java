@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -221,6 +223,14 @@ public class SwImageView
   public void setBorderWidth(@FloatRange(from = 0f) float borderWidth) {
     if (roundedDrawableParams != null) {
       roundedDrawableParams.setBorderWidth(borderWidth);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
+  }
+
+  public void setBorderWidthDiP(@IntRange(from = 0) int borderWidthDiP) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setBorderWidth(convertPixelToDpi(getResources(), borderWidthDiP));
     }
     updateRoundedDrawableParameters(drawable);
     invalidate();
@@ -462,6 +472,50 @@ public class SwImageView
         return Shader.TileMode.MIRROR;
     }
     return null;
+  }
+
+  /**
+   * Pixel 단위 숫자를 DPI단위 Float형태의 숫자로 변환한다.
+   *
+   * @param res   Resources.
+   * @param pixel 변환대상 Pixel 단위 숫자.
+   * @return Float형태의 DPI.
+   */
+  public static float convertPixelToDpi(@NonNull Resources res, int pixel) {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, pixel, res.getDisplayMetrics());
+  }
+
+  /**
+   * DPI 단위 숫자를 Pixel 단위 Float형태의 숫자로 변환한다.
+   *
+   * @param res Resources.
+   * @param dpi 변환대상 DPI단위의 숫자.
+   * @return Float형태의 pixel 숫자.
+   */
+  public static float convertDpiToPixel(@NonNull Resources res, int dpi) {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpi, res.getDisplayMetrics());
+  }
+
+  /**
+   * Pixel 단위 숫자를 DPI단위 Float형태의 숫자로 변환한다.
+   *
+   * @param res   Resources.
+   * @param pixel 변환대상 Pixel 단위 숫자.
+   * @return Float형태의 DPI.
+   */
+  public static float convertPixelToDpi(@NonNull Resources res, float pixel) {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, pixel, res.getDisplayMetrics());
+  }
+
+  /**
+   * DPI 단위 숫자를 Pixel 단위 Float형태의 숫자로 변환한다.
+   *
+   * @param res Resources.
+   * @param dpi 변환대상 DPI단위의 숫자.
+   * @return Float형태의 pixel 숫자.
+   */
+  public static float convertDpiToPixel(@NonNull Resources res, float dpi) {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpi, res.getDisplayMetrics());
   }
 
 }

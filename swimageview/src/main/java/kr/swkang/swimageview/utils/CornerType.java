@@ -18,7 +18,9 @@ public enum CornerType {
   EXCEPT_TOP_LEFT(10),
   EXCEPT_TOP_RIGHT(11),
   EXCEPT_BOTTOM_LEFT(12),
-  EXCEPT_BOTTOM_RIGHT(13);
+  EXCEPT_BOTTOM_RIGHT(13),
+  TOP_LEFT_WITH_BOTTOM_RIGHT(14),
+  TOP_RIGHT_WITH_BOTTOM_LEFT(15);
 
   int value;
 
@@ -58,6 +60,10 @@ public enum CornerType {
         return EXCEPT_BOTTOM_LEFT;
       case 13:
         return EXCEPT_BOTTOM_RIGHT;
+      case 14:
+        return TOP_LEFT_WITH_BOTTOM_RIGHT;
+      case 15:
+        return TOP_RIGHT_WITH_BOTTOM_LEFT;
       default:
         return NONE;
     }
