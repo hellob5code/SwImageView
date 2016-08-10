@@ -17,6 +17,9 @@
  - bug fixed 
 - 1.0.2
  - apply [ShapeType](https://github.com/ksu3101/SwImageView/blob/master/swimageview/src/main/java/kr/swkang/swimageview/utils/ShapeType.java) modes. it has `RECTANGLE`, `OVAL`, `CIRCLE`. 
+- 1.0.3
+ - added missing `CornerType`s. (`TOP_LEFT_WITH_BOTTOM_RIGHT`, `TOP_RIGHT_WITH_BOTTOM_LEFT`)
+ - bug fixed 
 
 ---
 ### 4. ScreenShot
