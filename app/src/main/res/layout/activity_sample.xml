@@ -15,6 +15,7 @@
    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:clipToPadding="false"
       android:gravity="center_horizontal"
       android:orientation="vertical">
 
@@ -98,11 +99,27 @@
          android:id="@+id/siv_6"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:layout_marginBottom="20dp"
          android:clickable="true"
          android:src="@drawable/sample_img_1"
          app:siv_click_color="#80000000"
          app:siv_click_enter_duration="100"
          app:siv_click_exit_duration="150"/>
+
+      <kr.swkang.swimageview.SwImageView
+         android:id="@+id/siv_7"
+         android:layout_width="250dp"
+         android:layout_height="250dp"
+         android:clickable="true"
+         android:src="@drawable/sample_img_2"
+         app:siv_click_color="#80000000"
+         app:siv_click_enter_duration="100"
+         app:siv_click_exit_duration="150"
+         app:siv_shadow_color="#000000"
+         app:siv_shadow_dx="0"
+         app:siv_shadow_dy="0"
+         app:siv_shadow_radius="14"
+         app:siv_shapetype="circle"/>
 
    </LinearLayout>
 

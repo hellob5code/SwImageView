@@ -18,7 +18,8 @@ public class RoundedDrawableParams {
   public static final float DEFAULT_CORNER_RADIUS       = 0f;
   public static final float DEFAULT_BORDER_WIDTH        = 0f;
   public static final int   DEFAULT_BORDER_COLOR        = Color.WHITE;
-  public static final int   DEFAULT_DIMM_COLOR          = Color.argb(180, 0, 0, 0);  // also 70% alpha
+  public static final int   DEFAULT_DIMM_COLOR          = Color.argb(180, 0, 0, 0);
+  public static final int   DEFAULT_SHADOW_COLOR        = Color.BLACK; //Color.argb(180, 0, 0, 0);
 
   private ImageView.ScaleType scaleType;
   @FloatRange(from = 0f)
@@ -33,6 +34,11 @@ public class RoundedDrawableParams {
   private ColorStateList      clickHighlightingColor;
   private int                 clickEnterDuration;
   private int                 clickExitDuration;
+  private float               shadowRadius;
+  private float               shadowDx;
+  private float               shadowDy;
+  @ColorInt
+  private int                 shadowColor;
 
   public RoundedDrawableParams() {
     // initialize parameters to default value
@@ -47,6 +53,10 @@ public class RoundedDrawableParams {
     this.clickHighlightingColor = ColorStateList.valueOf(DEFAULT_DIMM_COLOR);
     this.clickEnterDuration = 100;
     this.clickExitDuration = 100;
+    this.shadowRadius = 0f;
+    this.shadowDx = 0f;
+    this.shadowDy = 0f;
+    this.shadowColor = DEFAULT_SHADOW_COLOR;
   }
 
   public RoundedDrawableParams setBorderColorList(@NonNull ColorStateList colorStateList) {
@@ -56,6 +66,14 @@ public class RoundedDrawableParams {
 
   public RoundedDrawableParams setShapeType(@NonNull ShapeType shapeType) {
     this.shapeType = shapeType;
+    return this;
+  }
+
+  public RoundedDrawableParams setShadow(float shadowRadius, float shadowDx, float shadowDy, @ColorInt int shadowColor) {
+    this.shadowRadius = shadowRadius;
+    this.shadowDx = shadowDx;
+    this.shadowDy = shadowDy;
+    this.shadowColor = shadowColor;
     return this;
   }
 
@@ -108,8 +126,6 @@ public class RoundedDrawableParams {
     return borderColor;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - GETTERS
-
   public RoundedDrawableParams setBorderColor(@ColorInt int borderColor) {
     this.borderColor = ColorStateList.valueOf(borderColor);
     return this;
@@ -160,5 +176,21 @@ public class RoundedDrawableParams {
 
   public ShapeType getShapeType() {
     return shapeType;
+  }
+
+  public float getShadowRadius() {
+    return shadowRadius;
+  }
+
+  public float getShadowDx() {
+    return shadowDx;
+  }
+
+  public float getShadowDy() {
+    return shadowDy;
+  }
+
+  public int getShadowColor() {
+    return shadowColor;
   }
 }
