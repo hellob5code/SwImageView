@@ -34,6 +34,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.annotation.ColorInt;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -71,6 +72,11 @@ public class RoundedDrawable
   private ColorStateList      mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
   private ImageView.ScaleType mScaleType   = ImageView.ScaleType.FIT_CENTER;
 
+  private float shadowRadius = 0f;
+  private float shadowDx;
+  private float shadowDy;
+  @ColorInt
+  private int shadowColor = RoundedDrawableParams.DEFAULT_SHADOW_COLOR;
 
   public RoundedDrawable(Bitmap bitmap) {
     mBitmap = bitmap;
@@ -280,6 +286,15 @@ public class RoundedDrawable
       }
       mBitmapPaint.setShader(mBitmapShader);
       mRebuildShader = false;
+    }
+
+    if (shadowRadius != 0) {
+      if (mBorderWidth > 0) {
+        mBorderPaint.setShadowLayer(shadowRadius, shadowDx, shadowDy, shadowColor);
+      }
+      else {
+        mBitmapPaint.setShadowLayer(shadowRadius, shadowDx, shadowDy, shadowColor);
+      }
     }
 
     if (shapeType == ShapeType.OVAL) {
@@ -745,6 +760,14 @@ public class RoundedDrawable
       mRebuildShader = true;
       invalidateSelf();
     }
+    return this;
+  }
+
+  public RoundedDrawable setShadow(float shadowRadius, float shadowDx, float shadowDy, @ColorInt int shadowColor) {
+    this.shadowRadius = shadowRadius;
+    this.shadowDx = shadowDx;
+    this.shadowDy = shadowDy;
+    this.shadowColor = shadowColor;
     return this;
   }
 

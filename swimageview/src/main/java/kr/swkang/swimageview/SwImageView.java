@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import kr.swkang.swimageview.utils.ArgbEvaluatorCompat;
@@ -157,6 +158,16 @@ public class SwImageView
       final int clickExitAnimDuration = a.getInt(R.styleable.SwImageView_siv_click_exit_duration, RoundedDrawableParams.DEFAULT_CLICK_ANIM_DURATION);
       roundedDrawableParams.setClickExitAnimDuration(clickExitAnimDuration);
 
+      // drop shadow parameters
+      final float shadowRadius = a.getFloat(R.styleable.SwImageView_siv_shadow_radius, 0f);
+      final float shadowDx = a.getFloat(R.styleable.SwImageView_siv_shadow_dx, 0f);
+      final float shadowDy = a.getFloat(R.styleable.SwImageView_siv_shadow_dy, 0f);
+      final int shadowColor = a.getColor(R.styleable.SwImageView_siv_shadow_color, RoundedDrawableParams.DEFAULT_SHADOW_COLOR);
+      roundedDrawableParams.setShadow(shadowRadius, shadowDx, shadowDy, shadowColor);
+      if (shadowRadius != 0) {
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+      }
+
       a.recycle();
     }
 
@@ -179,7 +190,11 @@ public class SwImageView
           .setBorderColor(roundedDrawableParams.getBorderColor())
           .setShapeType(roundedDrawableParams.getShapeType())
           .setTileModeX(roundedDrawableParams.getTileModeX())
-          .setTileModeY(roundedDrawableParams.getTileModeY());
+          .setTileModeY(roundedDrawableParams.getTileModeY())
+          .setShadow(roundedDrawableParams.getShadowRadius(),
+                     roundedDrawableParams.getShadowDx(),
+                     roundedDrawableParams.getShadowDy(),
+                     roundedDrawableParams.getShadowColor());
 
       }
       else if (drawable instanceof LayerDrawable) {
@@ -326,6 +341,18 @@ public class SwImageView
     if (roundedDrawableParams != null) {
       setRoundedCorner(cornerType, roundedDrawableParams.getCornerRadius());
     }
+  }
+
+  public void setShadow(float shadowRadius, float dx, float dy) {
+    setShadow(shadowRadius, dx, dy, RoundedDrawableParams.DEFAULT_SHADOW_COLOR);
+  }
+
+  public void setShadow(float shadowRadius, float dx, float dy, @ColorInt int shadowColor) {
+    if (roundedDrawableParams != null) {
+      roundedDrawableParams.setShadow(shadowRadius, dx, dy, shadowColor);
+    }
+    updateRoundedDrawableParameters(drawable);
+    invalidate();
   }
 
   @Override

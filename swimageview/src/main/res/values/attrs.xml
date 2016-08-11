@@ -53,13 +53,18 @@
       <attr name="siv_click_enter_duration" format="integer"/>
       <attr name="siv_click_exit_duration" format="integer"/>
 
-      <attr name="android:scaleType"/>
-
       <attr name="siv_shapetype" format="enum">
          <enum name="rectangle" value="0"/>
          <enum name="oval" value="1"/>
          <enum name="circle" value="2"/>
       </attr>
+
+      <attr name="siv_shadow_radius" format="float"/>
+      <attr name="siv_shadow_dx" format="float"/>
+      <attr name="siv_shadow_dy" format="float"/>
+      <attr name="siv_shadow_color" format="reference|color"/>
+
+      <attr name="android:scaleType"/>
 
    </declare-styleable>
 
