@@ -64,6 +64,8 @@
       <attr name="siv_shadow_dy" format="float"/>
       <attr name="siv_shadow_color" format="reference|color"/>
 
+      <attr name="siv_start_transition_color" format="reference|color"/>
+
       <attr name="android:scaleType"/>
 
    </declare-styleable>
