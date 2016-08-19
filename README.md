@@ -20,6 +20,10 @@
 - 1.0.3
  - added missing `CornerType`s. (`TOP_LEFT_WITH_BOTTOM_RIGHT`, `TOP_RIGHT_WITH_BOTTOM_LEFT`)
  - bug fixed 
+- 1.0.4
+ - added new parameter `start transition colors`. 
+ - xml : `siv_start_transition_color`
+ - java : `setStartTransitionColor()`methods. 
 
 ---
 ### 4. ScreenShot
