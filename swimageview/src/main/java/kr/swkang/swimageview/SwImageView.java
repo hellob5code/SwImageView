@@ -55,6 +55,7 @@ public class SwImageView
   private RoundedDrawableParams roundedDrawableParams;
   private boolean               isEnableTransition;
   private int                   transitionDuration;
+  private int                   startTransitionColor;
 
   public SwImageView(Context context) {
     this(context, null);
@@ -168,6 +169,9 @@ public class SwImageView
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
       }
 
+      // start Transition color
+      startTransitionColor = a.getColor(R.styleable.SwImageView_siv_start_transition_color, Color.WHITE);
+
       a.recycle();
     }
 
@@ -209,6 +213,10 @@ public class SwImageView
   public void setRoundedDrawableParams(@NonNull RoundedDrawableParams params) {
     this.roundedDrawableParams = params;
     updateRoundedDrawableParameters(drawable);
+  }
+
+  public void setStartTransitionColor(@ColorInt int startTransitionColor) {
+    this.startTransitionColor = startTransitionColor;
   }
 
   public RoundedDrawableParams getRoundedDrawableParams() {
@@ -390,7 +398,7 @@ public class SwImageView
         final Drawable back = getDrawable();
         final TransitionDrawable td = createTransitionDrawable(
             back == null ? new ColorDrawable(
-                Color.BLACK
+                startTransitionColor
             ) : back,
             drawable
         );
