@@ -27,7 +27,7 @@
 
 ---
 ### 4. ScreenShot
- update soon..  
+ ![screen shot](https://github.com/ksu3101/TIL/blob/master/Android/images/screen_shot.jpg)
   
 ---
 ### 5. Usage
