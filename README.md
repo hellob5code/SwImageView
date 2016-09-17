@@ -32,6 +32,7 @@
   
 ---
 ### 5. Usage
+- Add the following dependancy to your module build.gradle file,      
 ```gradle
 dependencies {
   compile 'kr.swkang.swimageview:swimageview:x.x.x'  
